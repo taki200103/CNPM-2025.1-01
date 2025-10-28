@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Bảng Căn hộ
+model Apartment {
+  id    String @id @default(uuid()) @map("ID_apartment : str")
+  floor String @map("floor : int")
+  area  String @map("area : int")
+
+  households Household[]
+
+  @@map("apartments")
+}
+
+// Bảng Hộ dân
+model Household {
+  id                String   @id @default(uuid()) @map("ID_household : str")
+  apartmentId       String   @map("ID_apartment")
+  contractStartDate DateTime @map("contract_startdate")
+  contractEndDate   DateTime @map("contract_enddate")
+  ownerId           String   @map("ID_owner")
+
+  apartment Apartment  @relation(fields: [apartmentId], references: [id])
+  residents Resident[]
+
+  @@map("households")
+}
+
+// Bảng Cư dân
+model Resident {
+  id              String   @id @default(uuid()) @map("ID_Resident str")
+  householdId     String   @map("ID_household str")
+  fullName        String   @map("name str")
+  phone           String   @map("phone str")
+  password        String   @map("password str")
+  email           String   @unique @map("email str")
+  role            String   @default("resident") @map("role str")
+  temporaryStatus Boolean  @map("temporaryStatus bool")
+  idNumber        String   @map("CMND")
+  birthDate       DateTime @map("birth")
+
+  household     Household              @relation(fields: [householdId], references: [id])
+  notifications ResidentNotification[]
+  invoices      Invoice[]
+
+  @@map("residents")
+}
+
+// Bảng Thông báo cư dân (bảng trung gian)
+model ResidentNotification {
+  notificationId String @map("notification_ID")
+  residentId     String @map("Resident_ID")
+
+  notification Notification @relation(fields: [notificationId], references: [id])
+  resident     Resident     @relation(fields: [residentId], references: [id])
+
+  @@id([notificationId, residentId])
+  @@map("resident_notifications")
+}
+
+// Bảng Thông báo
+model Notification {
+  id        String   @id @default(uuid()) @map("id notification")
+  createdAt DateTime @default(now()) @map("createDate date")
+  info      String   @map("info str")
+  creator   String   @map("creator str")
+
+  residents ResidentNotification[]
+
+  @@map("notifications")
+}
+
+// Bảng Hóa đơn
+model Invoice {
+  id         String   @id @default(uuid()) @map("ID_invoice")
+  createdAt  DateTime @default(now()) @map("CreateDate")
+  serviceId  String   @map("ID_service")
+  residentId String   @map("ID_resident")
+  name       String   @map("Name")
+  money      Float    @map("Money")
+
+  service  Service  @relation(fields: [serviceId], references: [id])
+  resident Resident @relation(fields: [residentId], references: [id])
+
+  @@map("invoices")
+}
+
+// Bảng Khoản thu
+model Service {
+  id        String @id @default(uuid()) @map("ID_khoan thu")
+  name      String @map("Name")
+  info      String @map("Info")
+  calculate String @map("Calculate")
+
+  invoices Invoice[]
+
+  @@map("services")
+}
