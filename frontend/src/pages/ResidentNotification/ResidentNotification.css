@@ -1,0 +1,74 @@
+/* src/pages/ResidentNotification/ResidentNotification.css */
+
+.rn-page {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.rn-header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin: 0 0 1.5rem 0;
+}
+
+.rn-loading,
+.rn-error,
+.rn-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+  color: #666;
+}
+
+.rn-error {
+  color: #d32f2f;
+}
+
+.rn-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rn-item {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.rn-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rn-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.rn-date {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.rn-meta {
+  margin-top: 0.5rem;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .rn-page {
+    padding: 1rem;
+  }
+}
+
+

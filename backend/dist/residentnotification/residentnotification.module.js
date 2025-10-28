@@ -10,11 +10,13 @@ exports.ResidentnotificationModule = void 0;
 const common_1 = require("@nestjs/common");
 const residentnotification_controller_1 = require("./residentnotification.controller");
 const residentnotification_service_1 = require("./residentnotification.service");
+const prisma_module_1 = require("../prisma/prisma.module");
 let ResidentnotificationModule = class ResidentnotificationModule {
 };
 exports.ResidentnotificationModule = ResidentnotificationModule;
 exports.ResidentnotificationModule = ResidentnotificationModule = __decorate([
     (0, common_1.Module)({
+        imports: [prisma_module_1.PrismaModule],
         controllers: [residentnotification_controller_1.ResidentnotificationController],
         providers: [residentnotification_service_1.ResidentnotificationService],
     })

@@ -8,6 +8,7 @@ import Profile from '../Profile/Profile';
 import './HomePage.css';
 import Service from '../Service/Service';
 import Invoice from '../Invoice/Invoice';
+import ResidentNotification from '../ResidentNotification/ResidentNotification';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -126,7 +127,7 @@ const HomePage = () => {
           <Route path="/family" element={<div>Family Page</div>} />
           <Route path="/expense" element={<Invoice />} />
           <Route path="/service" element={<Service/>} />
-          <Route path="/notification" element={<div>Notification Page</div>} />
+          <Route path="/notification" element={<ResidentNotification />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/" element={<DashboardPage />} />
         </Routes>
