@@ -6,12 +6,15 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ResidentService } from './resident.service';
 import { CreateResidentDto, UpdateResidentDto } from './resident.dto';
+import { JwtAuthGuard } from '../system/guards/jwt-auth.guard';
 
 @ApiTags('Residents')
+@UseGuards(JwtAuthGuard)
 @Controller('residents')
 export class ResidentController {
   constructor(private readonly service: ResidentService) {}

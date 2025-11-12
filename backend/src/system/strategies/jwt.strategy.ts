@@ -9,6 +9,7 @@ interface JwtPayload {
   role: string;
 }
 
+//  gồm 2 việc chính là xác thực token và xác thực xem có tồn tại người dùng không
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private prisma: PrismaService) {

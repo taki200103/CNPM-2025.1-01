@@ -6,12 +6,15 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
 import { HouseholdService } from './household.service';
 import { CreateHouseholdDto, UpdateHouseholdDto } from './household.dto';
+import { JwtAuthGuard } from '../system/guards/jwt-auth.guard';
 
 @ApiTags('Households')
+@UseGuards(JwtAuthGuard)
 @Controller('households')
 export class HouseholdController {
   constructor(private readonly service: HouseholdService) {}

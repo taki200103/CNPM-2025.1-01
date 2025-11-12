@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const resident_service_1 = require("./resident.service");
 const resident_dto_1 = require("./resident.dto");
+const jwt_auth_guard_1 = require("../system/guards/jwt-auth.guard");
 let ResidentController = class ResidentController {
     service;
     constructor(service) {
@@ -86,6 +87,7 @@ __decorate([
 ], ResidentController.prototype, "remove", null);
 exports.ResidentController = ResidentController = __decorate([
     (0, swagger_1.ApiTags)('Residents'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('residents'),
     __metadata("design:paramtypes", [resident_service_1.ResidentService])
 ], ResidentController);

@@ -7,8 +7,11 @@ import {
   GetNotificationsByResidentDto,
   GetResidentsByNotificationDto,
 } from './residentnotification.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../system/guards/jwt-auth.guard';
 
 @ApiTags('Resident Notifications')
+@UseGuards(JwtAuthGuard)
 @Controller('resident-notifications')
 export class ResidentnotificationController {
   constructor(private service: ResidentnotificationService) {}

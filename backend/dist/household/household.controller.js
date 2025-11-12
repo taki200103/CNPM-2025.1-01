@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const household_service_1 = require("./household.service");
 const household_dto_1 = require("./household.dto");
+const jwt_auth_guard_1 = require("../system/guards/jwt-auth.guard");
 let HouseholdController = class HouseholdController {
     service;
     constructor(service) {
@@ -86,6 +87,7 @@ __decorate([
 ], HouseholdController.prototype, "remove", null);
 exports.HouseholdController = HouseholdController = __decorate([
     (0, swagger_1.ApiTags)('Households'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('households'),
     __metadata("design:paramtypes", [household_service_1.HouseholdService])
 ], HouseholdController);

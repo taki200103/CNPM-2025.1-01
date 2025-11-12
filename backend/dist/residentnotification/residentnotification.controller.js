@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const residentnotification_service_1 = require("./residentnotification.service");
 const residentnotification_dto_1 = require("./residentnotification.dto");
+const common_2 = require("@nestjs/common");
+const jwt_auth_guard_1 = require("../system/guards/jwt-auth.guard");
 let ResidentnotificationController = class ResidentnotificationController {
     service;
     constructor(service) {
@@ -48,6 +50,7 @@ __decorate([
 ], ResidentnotificationController.prototype, "getResidentsByNotification", null);
 exports.ResidentnotificationController = ResidentnotificationController = __decorate([
     (0, swagger_1.ApiTags)('Resident Notifications'),
+    (0, common_2.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('resident-notifications'),
     __metadata("design:paramtypes", [residentnotification_service_1.ResidentnotificationService])
 ], ResidentnotificationController);

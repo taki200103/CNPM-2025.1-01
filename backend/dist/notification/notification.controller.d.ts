@@ -11,8 +11,8 @@ export declare class NotificationController {
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     findAll(): import("@prisma/client").Prisma.PrismaPromise<({
         residents: {
-            residentId: string;
             notificationId: string;
+            residentId: string;
         }[];
     } & {
         info: string;
@@ -22,8 +22,8 @@ export declare class NotificationController {
     })[]>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__NotificationClient<({
         residents: {
-            residentId: string;
             notificationId: string;
+            residentId: string;
         }[];
     } & {
         info: string;

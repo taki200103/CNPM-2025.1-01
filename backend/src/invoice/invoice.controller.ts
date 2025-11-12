@@ -9,16 +9,19 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { InvoiceService } from './invoice.service';
+import { JwtAuthGuard } from '../system/guards/jwt-auth.guard';
 import {
   CreateInvoiceDto,
   UpdateInvoiceDto,
   InvoiceResponseDto,
 } from './invoice.dtos';
 
-@ApiTags('Invoices')
+@ApiTags('Invoices') // bảo vệ route
+@UseGuards(JwtAuthGuard)
 @Controller('invoices')
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
