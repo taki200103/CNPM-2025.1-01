@@ -93,3 +93,30 @@
     cursor: not-allowed;
     transform: none;
   }
+
+  .register-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .register-link p {
+    margin: 0;
+  }
+
+  .register-btn {
+    background: none;
+    border: none;
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .register-btn:hover {
+    color: #764ba2;
+  }

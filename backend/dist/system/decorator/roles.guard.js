@@ -22,7 +22,14 @@ let RolesGuard = class RolesGuard {
         const requiredRoles = this.reflector.get(roles_decorator_1.ROLES_KEY, context.getHandler());
         if (!requiredRoles)
             return true;
-        const { user } = context.switchToHttp().getRequest();
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not authenticated');
+        }
+        if (!user.role) {
+            throw new common_1.UnauthorizedException('User role not found');
+        }
         return requiredRoles.includes(user.role);
     }
 };

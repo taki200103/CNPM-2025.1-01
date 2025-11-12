@@ -1,8 +1,10 @@
 // src/pages/Login.tsx
+import { useNavigate } from 'react-router-dom';
 import { useLoginForm } from './Login_hook';
 import './Login.css';
 
 const Login = () => {
+  const navigate = useNavigate();
   const { formData, error, loading, handleChange, handleSubmit } = useLoginForm();
 
   return (
@@ -47,6 +49,10 @@ const Login = () => {
             {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </button>
         </form>
+
+        <div className="register-link">
+          <p>Chưa có tài khoản? <button type="button" className="register-btn" onClick={() => navigate('/register')}>Đăng ký</button></p>
+        </div>
       </div>
     </div>
   );

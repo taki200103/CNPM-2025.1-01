@@ -2,6 +2,7 @@ export interface Resident {
     id: string;
     householdId: string;
     fullName: string;
+    password?: string;
     phone: string;
     email: string;
     role: string;

@@ -55,8 +55,14 @@ let ResidentService = class ResidentService {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         return this.prisma.resident.create({
             data: {
-                ...data,
+                ...(data.householdId && { householdId: data.householdId }),
+                fullName: data.fullName,
+                phone: data.phone,
+                email: data.email,
                 password: hashedPassword,
+                role: data.role ?? 'resident',
+                temporaryStatus: data.temporaryStatus ?? false,
+                idNumber: data.idNumber,
                 birthDate: new Date(data.birthDate),
             },
         });

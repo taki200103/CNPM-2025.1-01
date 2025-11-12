@@ -25,9 +25,8 @@ class CreateResidentDto {
 }
 exports.CreateResidentDto = CreateResidentDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'uuid-household-id' }),
+    (0, swagger_1.ApiProperty)({ example: 'uuid-household-id', required: false }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateResidentDto.prototype, "householdId", void 0);
 __decorate([

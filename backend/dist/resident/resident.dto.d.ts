@@ -1,5 +1,5 @@
 export declare class CreateResidentDto {
-    householdId: string;
+    householdId?: string;
     fullName: string;
     phone: string;
     password: string;

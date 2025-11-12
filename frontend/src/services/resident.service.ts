@@ -21,6 +21,13 @@ const residentService = {
     const { data } = await api.get<Resident[]>('/residents');
     return data;
   },
+
+  // tao resident moi
+  createResident: async (resident: Resident): Promise<Resident> => {
+    const { data } = await api.post<Resident>('/residents', resident);
+    return data;
+  },
+  
 };
 
 export default residentService;
