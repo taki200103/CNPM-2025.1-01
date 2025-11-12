@@ -12,7 +12,7 @@ const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
-const jwt_strategy_1 = require("./strategies/jwt.strategy");
+const jwt_strategy_1 = require("../system/strategies/jwt.strategy");
 const prisma_module_1 = require("../prisma/prisma.module");
 let AuthModule = class AuthModule {
 };
