@@ -1,10 +1,12 @@
 // src/pages/Login.tsx
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoginForm } from './Login_hook';
 import './Login.css';
 
 const Login = () => {
   const { formData, error, loading, handleChange, handleSubmit } = useLoginForm();
+  const [selectedRole, setSelectedRole] = useState<'resident' | 'accountant' | 'police' | 'manager'>('resident');
 
   return (
     <div className="login-container">
@@ -42,6 +44,22 @@ const Login = () => {
               required
               disabled={loading}
             />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="role">Quyền</label>
+            <select
+              id="role"
+              name="role"
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value as typeof selectedRole)}
+              disabled={loading}
+            >
+              <option value="resident">Cư dân</option>
+              <option value="accountant">Kế toán</option>
+              <option value="police">Công an</option>
+              <option value="manager">Quản lý</option>
+            </select>
           </div>
 
           <button type="submit" disabled={loading}>
