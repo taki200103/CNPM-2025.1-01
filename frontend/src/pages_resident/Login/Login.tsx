@@ -1,12 +1,12 @@
 // src/pages/Login.tsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLoginForm } from './Login_hook';
+import { useLoginForm, type UserRole } from './Login_hook';
 import './Login.css';
 
 const Login = () => {
   const { formData, error, loading, handleChange, handleSubmit } = useLoginForm();
-  const [selectedRole, setSelectedRole] = useState<'resident' | 'accountant' | 'police' | 'manager'>('resident');
+  const [selectedRole, setSelectedRole] = useState<UserRole>('resident');
 
   return (
     <div className="login-container">
@@ -19,7 +19,7 @@ const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e, selectedRole)}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -52,7 +52,7 @@ const Login = () => {
               id="role"
               name="role"
               value={selectedRole}
-              onChange={(e) => setSelectedRole(e.target.value as typeof selectedRole)}
+              onChange={(e) => setSelectedRole(e.target.value as UserRole)}
               disabled={loading}
             >
               <option value="resident">Cư dân</option>
