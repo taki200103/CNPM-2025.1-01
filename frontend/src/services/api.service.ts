@@ -35,7 +35,9 @@ class ApiService {
     this.api.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401) {
+        // Allow specific requests to bypass global 401 redirect
+        const skipAuthRedirect = (error.config as unknown as { skipAuthRedirect?: boolean })?.skipAuthRedirect;
+        if (error.response?.status === 401 && !skipAuthRedirect) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           window.location.href = '/login';

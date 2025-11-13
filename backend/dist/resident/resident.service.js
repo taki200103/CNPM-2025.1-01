@@ -55,7 +55,7 @@ let ResidentService = class ResidentService {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         return this.prisma.resident.create({
             data: {
-                ...(data.householdId && { householdId: data.householdId }),
+                householdId: data.householdId,
                 fullName: data.fullName,
                 phone: data.phone,
                 email: data.email,

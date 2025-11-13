@@ -1,10 +1,9 @@
 // src/pages/Login.tsx
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLoginForm } from './Login_hook';
 import './Login.css';
 
 const Login = () => {
-  const navigate = useNavigate();
   const { formData, error, loading, handleChange, handleSubmit } = useLoginForm();
 
   return (
@@ -51,7 +50,7 @@ const Login = () => {
         </form>
 
         <div className="register-link">
-          <p>Chưa có tài khoản? <button type="button" className="register-btn" onClick={() => navigate('/register')}>Đăng ký</button></p>
+          <p>Chưa có tài khoản? <Link to="/register" className="register-btn">Đăng ký</Link></p>
         </div>
       </div>
     </div>

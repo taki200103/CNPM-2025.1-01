@@ -3,7 +3,18 @@ import { useRegister } from './Register_hook';
 import './Register.css';
 
 const Register: React.FC = () => {
-  const { formData, errors, isLoading, isSuccess, handleChange, handleSubmit } = useRegister();
+  const {
+    formData,
+    errors,
+    isLoading,
+    isSuccess,
+    handleChange,
+    handleSubmit,
+    households,
+    isLoadingHouseholds,
+    loadHouseholdsError,
+    useHouseholdDropdown,
+  } = useRegister();
 
   return (
     <div className="register-container">
@@ -50,8 +61,34 @@ const Register: React.FC = () => {
 
           <div className="form-group">
             <label htmlFor="apartmentNumber">Căn hộ <span className="required">*</span></label>
-            <input type="text" id="apartmentNumber" name="apartmentNumber" value={formData.apartmentNumber || ''} onChange={handleChange} placeholder="VD: A101, B205" />
+            {useHouseholdDropdown ? (
+              <select
+                id="householdId"
+                name="householdId"
+                value={formData.householdId || ''}
+                onChange={handleChange}
+                disabled={isLoadingHouseholds}
+                aria-label="Chọn căn hộ"
+              >
+                <option value="">{isLoadingHouseholds ? 'Đang tải...' : 'Chọn căn hộ'}</option>
+                {households.map((h) => (
+                  <option key={h.id} value={h.id}>
+                    {h.apartmentId}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                id="apartmentNumber"
+                name="apartmentNumber"
+                value={formData.apartmentNumber || ''}
+                onChange={handleChange}
+                placeholder="Nhập số căn hộ (VD: A101, B205)"
+              />
+            )}
             {errors.apartmentNumber && <span className="error">{errors.apartmentNumber}</span>}
+            {loadHouseholdsError && <span className="error">{loadHouseholdsError}</span>}
           </div>
 
           <div className="form-row">
