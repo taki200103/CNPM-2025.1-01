@@ -23,18 +23,18 @@ model Apartment {
 
 // Bảng Cư dân
 model Resident {
-  id              String   @id @default(uuid()) @map("ID_Resident")
-  apartmentId     String   @map("ID_apartment")
-  fullName        String   @map("name")
-  phone           String   @map("phone")
-  password        String   @map("password")
-  email           String   @unique @map("email")
-  role            String   @default("resident") @map("role")
-  temporaryStatus Boolean  @map("temporaryStatus")
-  idNumber        String   @map("CMND")
-  birthDate       DateTime @map("birth")
+  id              String    @id @default(uuid()) @map("ID_Resident")
+  apartmentId     String?   @map("ID_apartment")
+  fullName        String    @map("name")
+  phone           String    @map("phone")
+  password        String    @map("password")
+  email           String    @unique @map("email")
+  role            String    @default("resident") @map("role")
+  temporaryStatus Boolean   @map("temporaryStatus")
+  idNumber        String    @map("CMND")
+  birthDate       DateTime  @map("birth")
 
-  apartment     Apartment              @relation(fields: [apartmentId], references: [id])
+  apartment     Apartment?             @relation(fields: [apartmentId], references: [id])
   notifications ResidentNotification[]
   invoices      Invoice[]
   complains     Complain[]

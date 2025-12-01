@@ -1,17 +1,46 @@
+import os
 import psycopg2
 from psycopg2.extras import execute_values
 import bcrypt
 from datetime import datetime
+from urllib.parse import urlparse
 import uuid
 
+
+def get_db_connection_params():
+    """
+    Build psycopg2 connection kwargs using DATABASE_URL when available so that
+    the seed script stays in sync with Prisma configuration.
+    """
+    database_url = os.environ.get("DATABASE_URL")
+
+    if database_url:
+        parsed = urlparse(database_url)
+        if parsed.scheme not in ("postgresql", "postgres"):
+            raise ValueError(
+                f"Unsupported DATABASE_URL scheme: {parsed.scheme}. "
+                "Expected postgresql:// or postgres://"
+            )
+
+        return {
+            "host": parsed.hostname or "localhost",
+            "port": parsed.port or 5432,
+            "database": (parsed.path or "/").lstrip("/"),
+            "user": parsed.username or "postgres",
+            "password": parsed.password,
+        }
+
+    # Fall back to discrete env vars or final hardcoded defaults for dev usage.
+    return {
+        "host": os.environ.get("DB_HOST", "localhost"),
+        "port": int(os.environ.get("DB_PORT", 5432)),
+        "database": os.environ.get("DB_NAME", "BlueMoon"),
+        "user": os.environ.get("DB_USER", "postgres"),
+        "password": os.environ.get("DB_PASSWORD", "200103"),
+    }
+
 # Kết nối database
-conn = psycopg2.connect(
-    host="localhost",
-    port=5432,
-    database="BlueMoon",
-    user="postgres",
-    password="200103"
-)
+conn = psycopg2.connect(**get_db_connection_params())
 conn.autocommit = True
 cur = conn.cursor()
 

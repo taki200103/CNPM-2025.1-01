@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateResidentDto = {
-    apartmentId: string;
+    apartmentId?: string;
     fullName: string;
     phone: string;
     password: string;
     email: string;
     role?: string;
-    temporaryStatus: boolean;
+    temporaryStatus?: boolean;
     idNumber: string;
     birthDate: string;
 };

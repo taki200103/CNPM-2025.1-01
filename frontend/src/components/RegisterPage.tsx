@@ -104,7 +104,9 @@ export default function RegisterPage() {
     try {
       // Tạo resident mới qua API
       const createResidentData = {
-        apartmentId: formData.role === 'resident' ? formData.apartmentId : 'default',
+        ...(formData.role === 'resident' && {
+          apartmentId: formData.apartmentId,
+        }),
         fullName: formData.name,
         phone: formData.phone,
         password: formData.password,

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateResidentDto, UpdateResidentDto } from './resident.dto';
 import * as bcrypt from 'bcrypt';
@@ -8,15 +8,26 @@ export class ResidentService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateResidentDto) {
+    const role = (data.role || 'resident').toLowerCase();
+    const normalizedApartmentId =
+      data.apartmentId && data.apartmentId !== 'default'
+        ? data.apartmentId
+        : null;
+    const requiresApartment = role === 'resident';
+
+    if (requiresApartment && !normalizedApartmentId) {
+      throw new BadRequestException('Resident must be assigned to an apartment');
+    }
+
     const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.resident.create({
       data: {
-        apartmentId: data.apartmentId,
+        apartmentId: normalizedApartmentId,
         fullName: data.fullName,
         phone: data.phone,
         email: data.email,
         password: hashedPassword,
-        role: data.role ?? 'resident',
+        role,
         temporaryStatus: data.temporaryStatus ?? false,
         idNumber: data.idNumber,
         birthDate: new Date(data.birthDate),
