@@ -1,26 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { Loader2, Mail, Phone, CreditCard, Calendar, X } from 'lucide-react';
 import { ResidentsService } from '../../../api/services/ResidentsService';
 import { ApartmentsService } from '../../../api/services/ApartmentsService';
 import type { CreateResidentDto } from '../../../api/models/CreateResidentDto';
 import { ApiError } from '../../../api';
-import { Loader2, X, Mail, Phone, CreditCard, Calendar } from 'lucide-react';
-
-const residentRoles = [
-  { value: 'resident', label: 'Cư dân' },
-  { value: 'admin', label: 'Quản trị viên' },
-  { value: 'police', label: 'Bảo vệ' },
-  { value: 'accountant', label: 'Kế toán' },
-];
-
-type ResidentRecord = {
-  id: string;
-  fullName: string;
-  phone: string;
-  email: string;
-  role: string;
-  temporaryStatus: boolean;
-  apartment?: { name?: string };
-};
+import { residentRoles, type ResidentRecord } from './types';
 
 export default function ResidentsView() {
   const [residents, setResidents] = useState<ResidentRecord[]>([]);

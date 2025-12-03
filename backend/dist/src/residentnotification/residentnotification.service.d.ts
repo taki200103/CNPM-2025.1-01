@@ -10,8 +10,8 @@ export declare class ResidentnotificationService {
             creator: string;
         };
     } & {
-        residentId: string;
         notificationId: string;
+        residentId: string;
     })[]>;
     getResidentsByNotification(notificationId: string): Promise<({
         resident: {
@@ -27,7 +27,7 @@ export declare class ResidentnotificationService {
             birthDate: Date;
         };
     } & {
-        residentId: string;
         notificationId: string;
+        residentId: string;
     })[]>;
 }

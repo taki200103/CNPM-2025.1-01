@@ -1,4 +1,3 @@
-import React from 'react';
 import { Home, Users, DollarSign, TrendingUp, Calendar, AlertCircle } from 'lucide-react';
 
 export default function OverviewView() {

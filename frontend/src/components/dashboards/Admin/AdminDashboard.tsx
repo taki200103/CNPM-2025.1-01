@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DashboardLayout from '../../DashboardLayout';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Bell, 
-  DollarSign, 
+import {
+  LayoutDashboard,
+  Users,
+  Bell,
+  DollarSign,
   BarChart3,
-  Wrench
+  Wrench,
 } from 'lucide-react';
 import OverviewView from './OverviewView';
 import ResidentsView from './ResidentsView';
@@ -14,8 +14,7 @@ import NotificationsView from './NotificationsView';
 import FeesView from './FeesView';
 import StatisticsView from './StatisticsView';
 import ServicesView from './ServicesView';
-
-type View = 'overview' | 'residents' | 'notifications' | 'fees' | 'statistics' | 'services';
+import type { View } from './types';
 
 export default function AdminDashboard() {
   const [currentView, setCurrentView] = useState<View>('overview');

@@ -5,8 +5,8 @@ import RegisterPage from './components/RegisterPage';
 import ProfilePage from './components/ProfilePage';
 import AdminDashboard from './components/dashboards/Admin/AdminDashboard';
 import ResidentDashboard from './components/dashboards/Resident/ResidentDashboard';
-import PoliceDashboard from './components/dashboards/PoliceDashboard';
-import AccountantDashboard from './components/dashboards/AccountantDashboard';
+import PoliceDashboard from './components/dashboards/Police/PoliceDashboard';
+import AccountantDashboard from './components/dashboards/Accountant/AccountantDashboard';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) {
   const { user } = useAuth();
