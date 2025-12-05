@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Loader2, Download, TrendingUp, TrendingDown, DollarSign, FileText } from 'lucide-react';
-import { InvoicesService } from '../../../api/services/InvoicesService';
+import { InvoicesService, OpenAPI, ApiError } from '../../../api';
 import type { InvoiceResponseDto } from '../../../api/models/InvoiceResponseDto';
 
 type Expense = {
@@ -24,13 +24,14 @@ export default function ReportsView() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        OpenAPI.TOKEN = token;
+      }
+
       // Load invoices
       const invoicesData = await InvoicesService.invoiceControllerFindAll();
       const invoicesList = Array.isArray(invoicesData) ? invoicesData : invoicesData?.data || [];
@@ -51,6 +52,10 @@ export default function ReportsView() {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
@@ -109,31 +114,72 @@ export default function ReportsView() {
     return acc;
   }, {} as Record<string, number>);
 
-  const handleExportReport = () => {
-    const reportData = {
-      period: formatMonth(selectedMonth),
-      summary: {
-        totalRevenue: totalRevenue,
-        paidRevenue: paidRevenue,
-        totalExpenses: totalExpenses,
-        profit: profit,
-        profitMargin: profitMargin,
-      },
-      expensesByCategory,
-      revenueByService,
-      invoices: filteredInvoices,
-      expenses: filteredExpenses,
-    };
+  const handleExportReport = async () => {
+    try {
+      const XLSX = await import('xlsx');
+      const wb = XLSX.utils.book_new();
 
-    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `bao-cao-tai-chinh-${selectedMonth}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      // Summary sheet
+      const summaryData = [
+        ['Kỳ báo cáo', formatMonth(selectedMonth)],
+        ['Doanh thu (đã thu)', paidRevenue],
+        ['Tổng doanh thu (bao gồm chưa thu)', totalRevenue],
+        ['Tổng chi phí', totalExpenses],
+        ['Lợi nhuận', profit],
+        ['Tỷ suất lợi nhuận (%)', Number(profitMargin.toFixed(2))],
+      ];
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, wsSummary, 'Tong hop');
+
+      // Revenue by service
+      const revenueRows = Object.entries(revenueByService).map(([service, amount]) => ({
+        'Dịch vụ': service,
+        'Doanh thu': amount,
+      }));
+      const wsRevenue = XLSX.utils.json_to_sheet(revenueRows);
+      XLSX.utils.book_append_sheet(wb, wsRevenue, 'Doanh thu DV');
+
+      // Expenses by category
+      const expenseRows = Object.entries(expensesByCategory).map(([category, amount]) => ({
+        'Danh mục': category,
+        'Chi phí': amount,
+      }));
+      const wsExpenseSummary = XLSX.utils.json_to_sheet(expenseRows);
+      XLSX.utils.book_append_sheet(wb, wsExpenseSummary, 'Chi phí DM');
+
+      // Invoice details
+      const invoiceRows = filteredInvoices.map((inv) => ({
+        'Mã HĐ': inv.id,
+        'Cư dân': inv.resident?.fullName || inv.residentId || '',
+        'Dịch vụ': inv.service?.name || '',
+        'Số tiền': inv.money || 0,
+        'Trạng thái': inv.service?.status || '',
+        'Ngày tạo': inv.createdAt ? new Date(inv.createdAt).toLocaleDateString('vi-VN') : '',
+      }));
+      const wsInvoices = XLSX.utils.json_to_sheet(invoiceRows);
+      XLSX.utils.book_append_sheet(wb, wsInvoices, 'Chi tiết HĐ');
+
+      // Expense details
+      const expenseDetailRows = filteredExpenses.map((exp) => ({
+        'Mã phiếu': exp.id,
+        'Danh mục': exp.category,
+        'Mô tả': exp.description,
+        'Số tiền': exp.amount,
+        'Ngày chi': exp.date ? new Date(exp.date).toLocaleDateString('vi-VN') : '',
+        'Trạng thái': exp.status,
+      }));
+      const wsExpenseDetails = XLSX.utils.json_to_sheet(expenseDetailRows);
+      XLSX.utils.book_append_sheet(wb, wsExpenseDetails, 'Chi tiết chi phí');
+
+      XLSX.writeFile(wb, `bao-cao-tai-chinh-${selectedMonth}.xlsx`);
+    } catch (err: any) {
+      console.error('Xuất báo cáo thất bại', err);
+      alert(
+        err instanceof ApiError
+          ? err.body?.message || err.message
+          : 'Không thể xuất báo cáo. Vui lòng thử lại.',
+      );
+    }
   };
 
   if (loading) {

@@ -1,4 +1,4 @@
-export type View = 'overview' | 'residents' | 'notifications' | 'fees' | 'statistics' | 'services';
+export type View = 'overview' | 'residents' | 'notifications' | 'fees' | 'statistics' | 'services' | 'expenses';
 
 export type ResidentRecord = {
   id: string;

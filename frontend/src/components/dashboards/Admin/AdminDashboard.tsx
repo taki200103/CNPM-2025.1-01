@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '../../DashboardLayout';
 import {
   LayoutDashboard,
@@ -7,6 +7,7 @@ import {
   DollarSign,
   BarChart3,
   Wrench,
+  Receipt,
 } from 'lucide-react';
 import OverviewView from './OverviewView';
 import ResidentsView from './ResidentsView';
@@ -14,6 +15,7 @@ import NotificationsView from './NotificationsView';
 import FeesView from './FeesView';
 import StatisticsView from './StatisticsView';
 import ServicesView from './ServicesView';
+import ExpensesApprovalView from './ExpensesApprovalView';
 import type { View } from './types';
 
 export default function AdminDashboard() {
@@ -56,16 +58,29 @@ export default function AdminDashboard() {
       onClick: () => setCurrentView('services'),
       active: currentView === 'services',
     },
+    {
+      icon: <Receipt className="w-5 h-5" />,
+      label: 'Duyệt chi phí',
+      onClick: () => setCurrentView('expenses'),
+      active: currentView === 'expenses',
+    },
   ];
 
   return (
-    <DashboardLayout title="Dashboard Quản Trị" menuItems={menuItems}>
-      {currentView === 'overview' && <OverviewView />}
-      {currentView === 'residents' && <ResidentsView />}
-      {currentView === 'notifications' && <NotificationsView />}
-      {currentView === 'fees' && <FeesView />}
-      {currentView === 'statistics' && <StatisticsView />}
-      {currentView === 'services' && <ServicesView />}
-    </DashboardLayout>
+    <DashboardLayout
+      title="Dashboard Quản Trị"
+      menuItems={menuItems}
+      children={
+        <>
+          {currentView === 'overview' && <OverviewView />}
+          {currentView === 'residents' && <ResidentsView />}
+          {currentView === 'notifications' && <NotificationsView />}
+          {currentView === 'fees' && <FeesView />}
+          {currentView === 'statistics' && <StatisticsView />}
+          {currentView === 'services' && <ServicesView />}
+          {currentView === 'expenses' && <ExpensesApprovalView />}
+        </>
+      }
+    />
   );
 }

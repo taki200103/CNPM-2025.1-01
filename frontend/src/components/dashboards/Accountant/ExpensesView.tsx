@@ -7,7 +7,7 @@ type Expense = {
   description: string;
   amount: number;
   date: string;
-  status: 'Đã chi' | 'Chờ duyệt';
+  status: 'Đã chi' | 'Chờ duyệt' | 'Từ chối';
   createdAt: string;
 };
 
@@ -38,7 +38,7 @@ export default function ExpensesView() {
     description: '',
     amount: '',
     date: '',
-    status: 'Chờ duyệt' as 'Đã chi' | 'Chờ duyệt',
+    status: 'Chờ duyệt' as Expense['status'],
   });
 
   // Load expenses from localStorage
@@ -107,20 +107,6 @@ export default function ExpensesView() {
       setError('Không thể tạo phiếu chi. Vui lòng thử lại.');
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleUpdateStatus = (id: string, newStatus: 'Đã chi' | 'Chờ duyệt') => {
-    const updatedExpenses = expenses.map((exp) =>
-      exp.id === id ? { ...exp, status: newStatus } : exp
-    );
-    saveExpenses(updatedExpenses);
-  };
-
-  const handleDeleteExpense = (id: string) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa phiếu chi này?')) {
-      const updatedExpenses = expenses.filter((exp) => exp.id !== id);
-      saveExpenses(updatedExpenses);
     }
   };
 
@@ -234,37 +220,16 @@ export default function ExpensesView() {
                         className={`px-2 py-1 text-xs rounded-full ${
                           expense.status === 'Đã chi'
                             ? 'bg-green-100 text-green-800'
+                            : expense.status === 'Từ chối'
+                            ? 'bg-red-100 text-red-800'
                             : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
                         {expense.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <div className="flex gap-2">
-                        {expense.status === 'Chờ duyệt' && (
-                          <button
-                            onClick={() => handleUpdateStatus(expense.id, 'Đã chi')}
-                            className="text-green-600 hover:text-green-900"
-                          >
-                            Duyệt
-                          </button>
-                        )}
-                        {expense.status === 'Đã chi' && (
-                          <button
-                            onClick={() => handleUpdateStatus(expense.id, 'Chờ duyệt')}
-                            className="text-yellow-600 hover:text-yellow-900"
-                          >
-                            Hủy duyệt
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleDeleteExpense(expense.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Xóa
-                        </button>
-                      </div>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      Duyệt/ghi nhận do Admin thực hiện
                     </td>
                   </tr>
                 ))}
